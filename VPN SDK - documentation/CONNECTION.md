@@ -36,6 +36,8 @@ A model class that holds the configuration of a VPN connection.
   outside of the VPN tunnel. 
 - **`splitTunnelApps`** `List<String>` The list of application packages that can connect
 to the internet outside of the VPN tunnel.
+- **`domains`** `List<String>` The list of domains/IP addresses that can connect
+    to the internet outside of the VPN tunnel.
 - **`shouldOverrideMobileMtu`** `Boolean` indicates to override the MTU value when the user 
   is on a mobile connection.
 - **`apiAuthMode`** `ApiAuthMode` The api auth method to use.

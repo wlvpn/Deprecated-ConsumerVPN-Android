@@ -8,6 +8,7 @@ import com.netprotect.licenses.implementation.install.Licenses
 import com.wlvpn.consumervpn.BuildConfig
 import com.wlvpn.consumervpn.data.gateway.logs.LogTree
 import com.wlvpn.consumervpn.presentation.di.Injector
+import io.reactivex.plugins.RxJavaPlugins
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -35,6 +36,13 @@ class ConsumerApplication : Application() {
         Injector.INSTANCE.applicationComponent?.inject(this)
 
         Licenses.Install.INSTANCE.init(this, licensesInputLocator)
+
+        // Set global error handler for uncaught RX exceptions only
+        RxJavaPlugins.setErrorHandler { throwable ->
+            // This will be called if any undeliverable exception happens by either
+            // disposed subscribers or onErrors not implemented
+            Timber.w("Undeliverable exception", throwable)
+        }
 
     }
 
