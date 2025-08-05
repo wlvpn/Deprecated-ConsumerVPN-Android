@@ -7,13 +7,11 @@ Before you begin using VPN-SDK, you must set up your project following the next 
 
 ## Requirements
 
-- Java 8 (Optional)
-- Local Gradle (Optional)
+- Java 17
 - API Token Access
-- Package Cloud Access TPken
-- Android API level 15+ (4.0.3)
-- Android Build Tools 28.0+
-- Project Gradle plugin version 4.0.0
+- Package Cloud Access Token
+- Android API level 21+ (5)
+- Project Gradle plugin version 8.11.1
 
 ### Gradle
 
@@ -29,8 +27,8 @@ To support Java's 8 Lambda in your project make sure your gradle file contains J
 ```groovy
 android {
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
     }
 }
 ```

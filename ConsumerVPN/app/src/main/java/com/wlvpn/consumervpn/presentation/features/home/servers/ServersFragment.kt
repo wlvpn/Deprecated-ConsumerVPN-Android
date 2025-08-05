@@ -3,13 +3,13 @@ package com.wlvpn.consumervpn.presentation.features.home.servers
 import android.content.DialogInterface
 import android.os.Bundle
 import android.os.Parcelable
-import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import com.jakewharton.rxbinding3.appcompat.queryTextChanges
@@ -354,21 +354,16 @@ class ServersFragment :
     }
 
     private fun setupBackButtonHandling() {
-        view?.isFocusableInTouchMode = true
-        view?.requestFocus()
-        view?.setOnKeyListener(object : View.OnKeyListener {
-            override fun onKey(v: View?, keyCode: Int, event: KeyEvent?): Boolean {
-                if (view?.isVisible() == true) {
-                    event?.action?.let {
-                        if (keyCode == KeyEvent.KEYCODE_BACK && it == KeyEvent.ACTION_UP) {
-                            featureNavigator.navigateToConnectView()
-                            return true
-                        }
+        activity?.onBackPressedDispatcher?.addCallback(
+            viewLifecycleOwner,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    if (view?.isVisible() == true) {
+                        featureNavigator.navigateToHome()
                     }
                 }
-                return false
             }
-        })
+        )
     }
 
 }

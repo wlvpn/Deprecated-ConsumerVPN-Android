@@ -1,20 +1,28 @@
 buildscript {
     ext.kotlin_version = '1.9.20'
+    ext.gradleVersion = '8.11.1'
     ext.packagecloud_token = packagecloud_vpn_token
+    ext.kapt = "1.9.25"
 
     repositories {
+        mavenLocal()
         google()
         jcenter()
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:8.3.2'
+        classpath "com.android.tools.build:gradle:$gradleVersion"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
 }
 
+plugins {
+    id "org.jetbrains.kotlin.kapt" version "$kapt" apply false
+}
+
 allprojects {
     repositories {
+        mavenLocal()
         google()
         jcenter()
         maven {
