@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## v1.8.0
+* Adds 16KB Page Size support
+
 ## v1.7.0
 * Upgrade Target Android SDK to 35
 * Upgrade Gradle Wrapper from 8.0.1 to 8.14.3
@@ -12,7 +15,7 @@
 ## v1.6.3
 
 * Add SdkConfig.apiLogoutEndpoint attribute.
-* Updates `connectToNearest(...)` load balance algorithm; server selection prioritizes servers
+* Updates `connectToNearest(...)` load balance algorithm; server selection prioritizes servers 
   on the same country as the user.
 
 
@@ -40,28 +43,28 @@ Usage:
 
 ```kotlin
 
-// External dns
-val customDns = "1.1.1.3" // Cloudfare no malware no adult content
+    // External dns
+    val customDns = "1.1.1.3" // Cloudfare no malware no adult content
+    
+    VpnConnectionConfiguration
+        .Builder(username, password)
+        .connectionProtocol(VpnConnectionProtocolOptions.WireGuard)
+        ...
+        .dns(IpAddress(customDns))
+        .build()
 
-VpnConnectionConfiguration
-    .Builder(username, password)
-    .connectionProtocol(VpnConnectionProtocolOptions.WireGuard)
-...
-.dns(IpAddress(customDns))
-    .build()
 
+    // Local network dns
+    val customDns = "192.168.1.23" // A local server with PiHole or AdGuard
 
-// Local network dns
-val customDns = "192.168.1.23" // A local server with PiHole or AdGuard
-
-VpnConnectionConfiguration
-    .Builder(username, password)
-    .connectionProtocol(VpnConnectionProtocolOptions.WireGuard)
-...
-.isLocalLanAllowed(true)  // Enable this to allow the vpn to reach the server
-    .dns(IpAddress(customDns))
-    .build()
-
+    VpnConnectionConfiguration
+        .Builder(username, password)
+        .connectionProtocol(VpnConnectionProtocolOptions.WireGuard)
+        ... 
+        .isLocalLanAllowed(true)  // Enable this to allow the vpn to reach the server
+        .dns(IpAddress(customDns))
+        .build()
+    
 ```
 
 ## v1.6.0
@@ -81,10 +84,10 @@ VpnConnectionConfiguration
 
 ### Features
 * Added `apiHostMirrorConfiguration(...)` to the SDK configuration. With this configuration
-  if the main API host fails to respond the request, the SDK will retry it with the given list of host mirrors.
-  In addition to that, there is an option to stop the mirror call flow when a certain HTTP code is
-  returned by the endpoint (httpBreakingCodes). e.g. An a 401 code (Unauthorized) is a client failure
-  which should be ignored by the mirror call flow.
+if the main API host fails to respond the request, the SDK will retry it with the given list of host mirrors.
+In addition to that, there is an option to stop the mirror call flow when a certain HTTP code is
+returned by the endpoint (httpBreakingCodes). e.g. An a 401 code (Unauthorized) is a client failure
+which should be ignored by the mirror call flow.
 
 A `MirrorsConfiguration` is needed to call this method:
 
@@ -100,8 +103,8 @@ MirrorsConfiguration(
 ## v1.5.9
 
 ### Features
-* Added new Failure `NetworkErrorFailure` thrown whenever there's a network error during the
-  `limits` Endpoint
+* Added new Failure `NetworkErrorFailure` thrown whenever there's a network error during the 
+`limits` Endpoint
 
 * Added the possibility to change the api key after the library initialization
 
@@ -120,38 +123,38 @@ fun setAuthSuffix(authSuffix: String): Completable
 
 ### Features
 * Added `attemptToDisconnect()` variation of `disconnect()`, will return
-  a `Completable` instead fo a `ICallback`, which will complete on a
-  successful disconnection otherwise will emit a failure ([CouldNotDisconnectException]).
-  This method does not operate by default on a particular scheduler.
+a `Completable` instead fo a `ICallback`, which will complete on a 
+successful disconnection otherwise will emit a failure ([CouldNotDisconnectException]).
+This method does not operate by default on a particular scheduler.
 
 ## v1.5.7
 
 ### Features
 
 * Added `attemptToConnectToNearest(...)`,
-  `attemptToConnectToNearestRestrictedByCountry(...)`,
-  `attemptToConnect(...)` variations of current `connect...` methods;
-  These variations will return a `Completable` instead of a `ICallback`,
-  which will complete on a successful connection
-  otherwise will emit a failure ([CouldNotEstablishConnectionException]).
-  These methods do not operate by default on a particular scheduler.
+`attemptToConnectToNearestRestrictedByCountry(...)`,
+ `attemptToConnect(...)` variations of current `connect...` methods;
+    These variations will return a `Completable` instead of a `ICallback`,
+    which will complete on a successful connection
+    otherwise will emit a failure ([CouldNotEstablishConnectionException]).
+    These methods do not operate by default on a particular scheduler.
 
 
 ## v1.5.6
 
 ### Features
 
-* Added `getUserCurrentTier()` to get user current tier status.
-  This method will return a RxJava2 Single that emits a [Tier] object.
-  A [Tier] is a sealed class with three different
-  children([SubscriptionTier], [BandwidthTier] and [EmptyTier])
+* Added `getUserCurrentTier()` to get user current tier status. 
+This method will return a RxJava2 Single that emits a [Tier] object. 
+A [Tier] is a sealed class with three different 
+children([SubscriptionTier], [BandwidthTier] and [EmptyTier])
     ```kotlin
     fun getUserCurrentTier(): Single<Tier>
     ```
 
-* Added `.apiLimitsEndpoint(...)` to sdk configuration. This configuration is required in order to
-  use `getUserCurrentTier()`. Because this is handled with Retrofit, there is no need to add `/` to
-  this start start of the endpoint.
+* Added `.apiLimitsEndpoint(...)` to sdk configuration. This configuration is required in order to 
+use `getUserCurrentTier()`. Because this is handled with Retrofit, there is no need to add `/` to 
+this start start of the endpoint.
     ```kotlin
     SdkConfig.Builder(...)
     .
@@ -173,7 +176,7 @@ fun setAuthSuffix(authSuffix: String): Completable
 
 * [Dagger v2.23.2](](https://www.google.com)) is required for this version to work correctly
 
-* A new VpnState was added called `Disconnected Error`
+* A new VpnState was added called `Disconnected Error` 
 
 * `refreshToken()` was deprecated use instead `refreshToken(username, password)`
 
@@ -182,23 +185,23 @@ fun setAuthSuffix(authSuffix: String): Completable
 ### Features
 
 * Added `setCustomGeoInfo(vpnGeoInfo)` Adds manual geo information to
-  the sdk. Setting this values manually invalidates the need to call
-  `fetchGeoInfo()` for the load balance to work.
+the sdk. Setting this values manually invalidates the need to call 
+`fetchGeoInfo()` for the load balance to work. 
     ```kotlin
     fun setCustomGeoInfo(vpnGeoData: VpnGeoData): ICallback<Boolean>
     ```
 
 
 * Added `refreshToken(username, password)` Tries to refresh token
-  when the session token is invalid, in case of an error it will automatically
-  refresh the session performing a login
+when the session token is invalid, in case of an error it will automatically
+refresh the session performing a login
      ```kotlin
     fun refreshToken(username: String, password: String): Callback<VpnLoginResponse>
     ```
 
-* Added Locale into the sdk configuration. This allows to switch
-  languages to support different countries names and searches using as
-  a default value `Locale("en", "US")`
+* Added Locale into the sdk configuration. This allows to switch 
+languages to support different countries names and searches using as 
+a default value `Locale("en", "US")`
 
     ```kotlin
      SdkConfig.Builder(ACCOUNT_NAME, API_KEY, AUTH_SUFFIX)
@@ -207,19 +210,19 @@ fun setAuthSuffix(authSuffix: String): Completable
         .build()
     ```
 
-* Added `updateCountriesLanguage` this allows to switch, during
-  runtime, the current sdk Locale and updates the name of the countries
-  in the SDK database. This helps you to use different languages to
-  search for countries using the device language
+* Added `updateCountriesLanguage` this allows to switch, during 
+runtime, the current sdk Locale and updates the name of the countries
+in the SDK database. This helps you to use different languages to
+search for countries using the device language
 
     ```kotlin
     fun updatePopsCountryLanguage(locale: Locale): Callback<Boolean>
     ```
 
 
-* Added VpnState `Disconnected Error`. This will allow handling errors
-  that produce disconnections easier. The most common error on this
-  scenario is "AUTH_FAILURE"
+* Added VpnState `Disconnected Error`. This will allow handling errors 
+that produce disconnections easier. The most common error on this 
+scenario is "AUTH_FAILURE"
 
     ```kotlin
     getVpnSdk().listenToConnectState()
@@ -237,9 +240,9 @@ fun setAuthSuffix(authSuffix: String): Completable
         })
     ```
 
-* Added `fetchAllServersByCountryAndCity` operations to fetch servers
-  filtered by country and city name. This will avoid the need to fetch
-  pops first and then fetch all servers by VPN Pop
+* Added `fetchAllServersByCountryAndCity` operations to fetch servers 
+filtered by country and city name. This will avoid the need to fetch 
+pops first and then fetch all servers by VPN Pop
 
     ``` kotlin
     fun fetchAllServersByCountryAndCity(countryCode: String, city: String)
@@ -247,7 +250,7 @@ fun setAuthSuffix(authSuffix: String): Completable
     fun fetchAllServersByCountryAndCity(countryCode: String, city: String, sortServer: SortServer)
     ```
 
-## v1.5.3
+## v1.5.3 
 
 ### Breaking Changes
 
@@ -290,7 +293,7 @@ fun setAuthSuffix(authSuffix: String): Completable
     ```
 
 * `fetchAvailableVpnPortOptions(vpnProtocolOptions, scrambleEnabled)` was deprecated
-  use instead `fetchAvailableVpnPortOptions(vpnProtocolOptions, vpnConnectionProtocolOptions, scrambleEnabled)`
+use instead `fetchAvailableVpnPortOptions(vpnProtocolOptions, vpnConnectionProtocolOptions, scrambleEnabled)`
 
 * Permissions will no longer be requested automatically
     ```xml
@@ -303,9 +306,9 @@ fun setAuthSuffix(authSuffix: String): Completable
 * Update servers will no longer update protocols only servers
 
 * Connections to the VPN now require a new argument `vpnRevokedNotification`.
-  This notification will be shown whenever the system revokes the permission for the
-  VPN to keep running.It is only shown when the VPN is connected and the system revokes
-  necessary permissions
+This notification will be shown whenever the system revokes the permission for the
+VPN to keep running.It is only shown when the VPN is connected and the system revokes
+necessary permissions
     ```kotlin
     ICallback<Boolean> connect(vpnNotification, vpnRevokedNotification, vpnConnectionConfiguration)
     ```
@@ -313,15 +316,15 @@ fun setAuthSuffix(authSuffix: String): Completable
 ### Bug fixes
 
 * Fix for the Vpn detailed state description not showing
-  while listening for the disconnected state
+while listening for the disconnected state
 
 * OpenVpn ports will now fetch ports where the cipher is not null using the new function
-  `fetchAvailableVpnPortOptions(vpnProtocolOptions, vpnConnectionProtocolOptions, scrambleEnabled)`
+`fetchAvailableVpnPortOptions(vpnProtocolOptions, vpnConnectionProtocolOptions, scrambleEnabled)`
 
 * Fixed VPN notification dismissal after several network changes
 
 * Fixed Pops sorting functionality for search queries, now it prioritize strings starting with the query
-  Added the following methods for query search sorting:
+Added the following methods for query search sorting:
 
     ```kotlin
     //Fetch a list of all pops sorted by query in specific order, first by city
@@ -343,16 +346,16 @@ fun setAuthSuffix(authSuffix: String): Completable
 ### Feature
 
 * Added a listener for connection state for centralized operations.
-  Allows to execute custom centralized operations
-  that react to the VPN connection states. For example, it can be used to notify Widgets,
-  Quick Tiles Settings or Services. Important: Only use centralized single operations
-  otherwise is better to use `listenToConnectState()`
+Allows to execute custom centralized operations
+that react to the VPN connection states. For example, it can be used to notify Widgets,
+Quick Tiles Settings or Services. Important: Only use centralized single operations
+otherwise is better to use `listenToConnectState()`
     ```kotlin
     listenToCentralizedConnectionState(vpnStateConnectionCallback)
     ```
 
 * Added fetch available ports with connection settings.
-  Replaces `fetchAvailableVpnPortOptions(vpnProtocolOptions, scrambleEnabled)`
+Replaces `fetchAvailableVpnPortOptions(vpnProtocolOptions, scrambleEnabled)`
     ``` kotlin
     fetchAvailableVpnPortOptions(vpnProtocolOptions, vpnConnectionProtocolOptions, scrambleEnabled)
     ```
@@ -360,7 +363,7 @@ fun setAuthSuffix(authSuffix: String): Completable
 * Deprecated `connect(VpnPop)` in replacement of only `connectToNearest(VpnPop)`.
 
 * Deprecated `connect(countryCode)` in replacement of only `connectToNearest(notification)`. Balancing is
-  performed according to saved location in configuration object
+    performed according to saved location in configuration object
 
 * Deprecated `connect(notification)` in replacement of only `connectToNearest(notification)`.
 
@@ -392,13 +395,13 @@ fun setAuthSuffix(authSuffix: String): Completable
     ```
 
 * The `VpnPop -> country` parameter will be stored in English
-  instead of using the device `Locale`. To update the internal database use:
+instead of using the device `Locale`. To update the internal database use:
     ```kotlin
     fun updateServerList()
     ```
 
 * Added two new fetch calls to retrieve all servers filtered by
-  country code `fetchAllServersByCountryCode`.
+country code `fetchAllServersByCountryCode`.
 
     ```kotlin
     fun fetchAllServersByCountryCode(countryCode:String): ICallback<List<VpnServer>>
@@ -415,15 +418,15 @@ fun setAuthSuffix(authSuffix: String): Completable
 New argument to override the MTU value when the user is on a mobile connection.
 
 For some IPv6 only networks is necessary to override the MTU value to 1280
-to avoid issues with fragmentation, a new argument for
-VPNConnectionConfiguration was added  `.shouldOverrideMobileMtu(true);` to
-add that behavior
+ to avoid issues with fragmentation, a new argument for 
+ VPNConnectionConfiguration was added  `.shouldOverrideMobileMtu(true);` to
+ add that behavior
 
 ```java
 VpnConnectionConfiguration.Builder(
-        credentials.getUsername(),
+    credentials.getUsername(),
     credentials.getPassword())
-        .shouldOverrideMobileMtu(true);
+    .shouldOverrideMobileMtu(true);
 ```
 
 
@@ -431,63 +434,63 @@ VpnConnectionConfiguration.Builder(
 
 ### Feature
 
-The VPN initialization callback is now supported in Fragment's `startActivityForResult`
+The VPN initialization callback is now supported in Fragment's `startActivityForResult` 
 
 Introduction of Split tunneling per application and discovery accessibility of the LAN,
-see VpnConnectionConfiguration.Builder
+ see VpnConnectionConfiguration.Builder
 
 Introduction of Builder pattern for the VPN configuration
 
 ```java
 VpnConnectionConfiguration.Builder(
-        credentials.getUsername(),
+                    credentials.getUsername(),
                     credentials.getPassword())
-        .connectionProtocol(VpnConnectionProtocolOptions.OPENVPN)
+            .connectionProtocol(VpnConnectionProtocolOptions.OPENVPN)
             .vpnProtocol(VpnProtocolOptions.PROTOCOL_UDP)
             .debugLevel(0)
             .scrambleOn(false)
             .port(VpnPortOptions.PORT_443)
             .build();
 ```
-
+                
 ### Bug Fixes
-* Fixed empty Observable for logout.subscribe(), the callback is executed after the logout is made.
+* Fixed empty Observable for logout.subscribe(), the callback is executed after the logout is made. 
 
 ## v1.5.0
 
 ### Bug Fixes
 
 * Supports empty values for the StrongSwan protocol in case is not supported by the API
-* The token is properly refreshed using the access token
-* The methods to check if an access token is valid `isAccessTokenValid` informs of expiration
-  three days prior expiration for renewal.
-* The load balancing now always chose the closest city
+* The token is properly refreshed using the access token 
+* The methods to check if an access token is valid `isAccessTokenValid` informs of expiration 
+three days prior expiration for renewal.
+* The load balancing now always chose the closest city 
 * The MTU is set to 1280 by default in mobile networks to avoid issues with IPv6
-
+  
 ## v1.4
 
 ### Feature
 
 Added in the long awaited Strongswan integration to the SDK. This will allow for connections
-using the IKEv2/IPSec protocols implemented by Strongswan. This feature can be activated with
+using the IKEv2/IPSec protocols implemented by Strongswan. This feature can be activated with 
 the new option in the VpnConnectionConfiguration object. For now OpenVPN will remain the default
 connection option due to better server support.
 
-Here is the latest VpnConnectionConfiguration constructor with defaults:
+Here is the latest VpnConnectionConfiguration constructor with defaults: 
 
 ```kotlin
 VpnConnectionConfiguration(
-    username: String,
-    password: String,
-    scrambleOn: Boolean = false,
-reconnectOn: Boolean = true,
-port: VpnPortOptions = VpnPortOptions.PORT_443,
-protocol: VpnProtocolOptions = VpnProtocolOptions.PROTOCOL_UDP,
-connectionProtocol: VpnConnectionProtocolOptions = VpnConnectionProtocolOptions.OPENVPN,
-debugLevel: Int = 5
-)
+        username: String,
+        password: String,
+        scrambleOn: Boolean = false,
+        reconnectOn: Boolean = true,
+        port: VpnPortOptions = VpnPortOptions.PORT_443,
+        protocol: VpnProtocolOptions = VpnProtocolOptions.PROTOCOL_UDP,
+        connectionProtocol: VpnConnectionProtocolOptions = VpnConnectionProtocolOptions.OPENVPN,
+        debugLevel: Int = 5
+    )
 ```
-
+    
 To activate Strongswan simply change the connectionProtocol value to `VpnConnectionProtocolOptions.IKEV2`.
 This will require the API to support this connection protocol so ensure Strongswan is setup before
 attempting.
@@ -495,21 +498,21 @@ attempting.
 This version also upgrades the database version and runs a migration to prepare for the new attributes
 in the api to support the IKEv2 `remoteId` and `gateway` attributes.
 
-
+    
 
 ## v1.3
 
 ### Features
 
 * Added in debug level configuration option to `VpnConnectionConfiguration` default is level 3 with an available
-  range of 0 to 11 with 0 having no logging.
+range of 0 to 11 with 0 having no logging.
 * Added in request and response logging for debugging purposes
-* Deprecated `getGeoInfo()` and `fetchIpGeoLocation()` in replacement of only `fetchGeoInfo()`.
-  This will eliminate the confusion of what geo call to use and will handle geo state when
-  connected and disconnected behind the scenes.
+* Deprecated `getGeoInfo()` and `fetchIpGeoLocation()` in replacement of only `fetchGeoInfo()`. 
+This will eliminate the confusion of what geo call to use and will handle geo state when 
+connected and disconnected behind the scenes.
 * Added in `fetchAvailableVpnPortOptions()` to get the available ports you can make for connections.
 * Fetch calls have been upgraded with sort options. This will add in ORDER BY statements to your queries.
-  See the SortPop and SortServer objects for reference. They can be used like so:
+See the SortPop and SortServer objects for reference. They can be used like so:
     ```kotlin
     // NAME is table column, ASC is table row order
     fetchAllServers(SortServer(SortServerOption.NAME, SortOrder.ASC))
@@ -525,7 +528,7 @@ in the api to support the IKEv2 `remoteId` and `gateway` attributes.
     // Refresh the token using the stored refresh token
     fun refreshToken()
     ```
-
+    
 ### Bug Fixes
 
 * Login request will now properly pass along error when the login attempt has failed
@@ -543,7 +546,7 @@ in the api to support the IKEv2 `remoteId` and `gateway` attributes.
     fetchConnectionInfo() : ICallback<VpnConnectionInfo>
     ```
 * Added in new connect overload method that allows you to connect without selecting
-  a server or pop. SDK will use your geolocation to determine best server and pop.
+a server or pop. SDK will use your geolocation to determine best server and pop.
     ```kotlin
     fun connect(notification: VpnNotification,
                              configuration: VpnConnectionConfiguration): ICallback<Boolean>
